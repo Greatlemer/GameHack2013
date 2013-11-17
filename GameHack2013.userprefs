@@ -1,11 +1,17 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/ControlCharacter.js">
+    <Files>
+      <File FileName="Assets/Scripts/ControlCharacter.js" Line="21" Column="41" />
+      <File FileName="Assets/Scripts/GameControl.js" Line="14" Column="52" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="Assembly-UnityScript" expanded="True">
-            <Node name="ControlCharacter.js" selected="True" />
+            <Node name="Scripts" expanded="True">
+              <Node name="ControlCharacter.js" selected="True" />
+            </Node>
           </Node>
         </State>
       </Pad>

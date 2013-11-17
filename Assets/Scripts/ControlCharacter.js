@@ -11,7 +11,7 @@ enum CharacterWeapon { Soaker, Paintball }
 private var first_weapon = CharacterWeapon.Soaker;
 private var last_weapon = CharacterWeapon.Paintball;
 
-private var state = CharacterState.Idling;
+private var state = CharacterState.Inactive;
 var weapon = CharacterWeapon.Soaker;
 private var anims : Animator[];
 private var anims_length : int;
@@ -22,6 +22,7 @@ function Awake () {
 }
 
 function Start () {
+	GameControl.RegisterCharacter(this);
 }
 
 function Update () {
@@ -50,7 +51,7 @@ function Update () {
 }
 
 function FixedUpdate() {
-	if (state.Inactive) {
+	if (state == CharacterState.Inactive) {
 		return;
 	}
     var h = Input.GetAxis("Horizontal");
@@ -136,4 +137,12 @@ function ChangeState(newState : CharacterState) {
 	for(idx = 0; idx < anims_length; idx++) {
 		anims[idx].SetTrigger(animation_trigger);
 	}
+}
+
+function Activate() {
+	ChangeState(CharacterState.Idling);
+}
+
+function Deactivate() {
+	ChangeState(CharacterState.Inactive);
 }
