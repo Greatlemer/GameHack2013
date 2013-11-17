@@ -18,6 +18,8 @@ var character_type = CharacterType.Leader;
 private var anims : Animator[];
 private var anims_length : int;
 
+private var aimAngle : float = 0.0;
+
 function Awake () {
 	anims = GetComponentsInChildren.<Animator>();
     anims_length = anims.length;
@@ -95,9 +97,18 @@ function FixedUpdate() {
     	rigidbody2D.velocity.y = 0.0;
     	ChangeState(CharacterState.Idling);
     }
-    
-    // Keep upright
-    rigidbody2D.angularVelocity = 0.0;
+
+    var weaponAnim = gameObject.transform.Find("Weapon Animation");
+    if (Input.GetButton("AimUp") && aimAngle < 45.0)
+    {
+    	weaponAnim.transform.Rotate(UnityEngine.Vector3(0.0, 0.0, 1.0));
+    	aimAngle += 1.0;
+    }
+    if (Input.GetButton("AimDown") && aimAngle > -45.0)
+    {
+    	weaponAnim.transform.Rotate(UnityEngine.Vector3(0.0, 0.0, -1.0));
+    	aimAngle -= 1.0;
+    }
     
     if(Mathf.Abs(h) > 0.1) {
     	ChangeState(CharacterState.Walking);
