@@ -1,10 +1,17 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/FireStream.js">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Damage.js">
     <Files>
-      <File FileName="Assets/Fire.js" Line="11" Column="6" />
-      <File FileName="Assets/FireStream.js" Line="17" Column="35" />
+      <File FileName="Assets/Fire.js" Line="13" Column="110" />
+      <File FileName="Assets/FireStream.js" Line="26" Column="4" />
+      <File FileName="Assets/Damage.js" Line="34" Column="68" />
+      <File FileName="Assets/Power.js" Line="3" Column="17" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True" selected="True" />
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
