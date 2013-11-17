@@ -50,6 +50,7 @@
      <Compile Include="Assets\Scripts\Damage.js" />
      <Compile Include="Assets\Scripts\Fire.js" />
      <Compile Include="Assets\Scripts\FireStream.js" />
+     <Compile Include="Assets\Scripts\GameControl.js" />
      <Compile Include="Assets\Scripts\Jump.js" />
      <Compile Include="Assets\Scripts\Power.js" />
      <Compile Include="Assets\Scripts\TriggerClimb.js" />

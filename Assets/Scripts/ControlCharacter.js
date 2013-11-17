@@ -6,8 +6,12 @@ var FacingRight = true;
 var canClimb = false;
 
 enum CharacterState { Inactive, Idling, Walking, Jumping, Climbing, Shooting };
+enum CharacterWeapon { Soaker, Paintball }
+private var first_weapon = CharacterWeapon.Soaker;
+private var last_weapon = CharacterWeapon.Paintball;
 
-private var state = CharacterState.Inactive;
+private var state = CharacterState.Idling;
+var weapon = CharacterWeapon.Soaker;
 private var anims : Animator[];
 private var anims_length : int;
 
@@ -22,6 +26,25 @@ function Start () {
 function Update () {
 	if (state == CharacterState.Inactive) {
 		return;
+	}
+	var newWeapon : CharacterWeapon;
+	if (Input.GetButtonUp("WeaponChangePrev")) {
+		if (weapon == first_weapon) {
+			newWeapon = last_weapon;
+		}
+		else {
+			newWeapon = weapon - 1;
+		}
+		ChangeWeapon(newWeapon);
+	}
+	if (Input.GetButtonUp("WeaponChangeNext")) {
+		if (weapon == last_weapon) {
+			newWeapon = first_weapon;
+		}
+		else {
+			newWeapon = weapon + 1;
+		}
+		ChangeWeapon(newWeapon);
 	}
 }
 
@@ -61,6 +84,26 @@ function FlipCharacter() {
 	transform.localScale = scale;
 }
 
+function ChangeWeapon(newWeapon : CharacterWeapon) {
+	if (newWeapon == weapon) {
+		return;
+	}
+	var animation_trigger = 'CW Super Soaker';
+	switch (newWeapon) {
+		case CharacterWeapon.Soaker:
+			animation_trigger = 'CW Super Soaker';
+			break;
+		case CharacterWeapon.Paintball:
+			animation_trigger = 'CW Paintball';
+			break;
+	}
+	weapon = newWeapon;
+    var idx = 0;
+	for(idx = 0; idx < anims_length; idx++) {
+		anims[idx].SetTrigger(animation_trigger);
+	}
+}
+
 function ChangeState(newState : CharacterState) {
 	if (newState == state) {
 		return;
@@ -74,7 +117,7 @@ function ChangeState(newState : CharacterState) {
 			animation_trigger = 'Idle';
 			break;
 		case CharacterState.Walking:
-			animation_trigger = 'Walking';
+			animation_trigger = 'Walk';
 			break;
 		case CharacterState.Jumping:
 			animation_trigger = 'Jump';
@@ -86,6 +129,7 @@ function ChangeState(newState : CharacterState) {
 			animation_trigger = 'Shoot';
 			break;
 	}
+	state = newState;
     var idx = 0;
 	for(idx = 0; idx < anims_length; idx++) {
 		anims[idx].SetTrigger(animation_trigger);
