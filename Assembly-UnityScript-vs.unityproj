@@ -52,6 +52,7 @@
      <Compile Include="Assets\FireStream.js" />
      <Compile Include="Assets\Jump.js" />
      <Compile Include="Assets\Power.js" />
+     <Compile Include="Assets\TriggerClimb.js" />
      <None Include="Assets\Standard Assets\Water (Pro Only)\Water4\Sources\Shaders\FX-SimpleWater4.shader" />
      <None Include="Assets\Standard Assets\Water (Pro Only)\Sources\Shaders\FX-Water.shader" />
      <None Include="Assets\Standard Assets\Water (Pro Only)\Water4\Sources\Shaders\WaterInclude.cginc" />
