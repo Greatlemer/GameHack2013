@@ -18,7 +18,6 @@ function Fire() {
 	var dirMult : UnityEngine.Quaternion = UnityEngine.Quaternion.identity;
 	if (!char_controller.FacingRight)
 	{
-		var dirMult : UnityEngine.Quaternion = UnityEngine.Quaternion.identity;
 		if (!gameObject.transform.root.GetComponentInChildren(ControlCharacter).FacingRight)
 		{
 			dirMult = UnityEngine.Quaternion.AngleAxis(180, UnityEngine.Vector3(0.0, 1.0, 0.0));
