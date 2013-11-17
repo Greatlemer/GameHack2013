@@ -6,6 +6,7 @@ var FacingRight = true;
 var canClimb = false;
 var previousCanClimb = false;
 
+enum CharacterType { Leader, Defender, Speedy, Sharpshooter };
 enum CharacterState { Inactive, Idling, Walking, Jumping, Climbing, Shooting };
 enum CharacterWeapon { Soaker, Paintball }
 private var first_weapon = CharacterWeapon.Soaker;
@@ -13,6 +14,7 @@ private var last_weapon = CharacterWeapon.Paintball;
 
 private var state = CharacterState.Inactive;
 var weapon = CharacterWeapon.Soaker;
+var character_type = CharacterType.Leader;
 private var anims : Animator[];
 private var anims_length : int;
 
@@ -22,6 +24,26 @@ function Awake () {
 }
 
 function Start () {
+	var animation_trigger = 'Assign Leader';
+	switch (character_type) {
+		case CharacterType.Defender:
+			animation_trigger = 'Assign Defender';
+			break;
+		case CharacterType.Leader:
+			animation_trigger = 'Assign Leader';
+			break;
+		case CharacterType.Sharpshooter:
+			animation_trigger = 'Assign Sharpshooter';
+			break;
+		case CharacterType.Speedy:
+			animation_trigger = 'Assign Speedy';
+			break;
+	}
+    var idx = 0;
+	for(idx = 0; idx < anims_length; idx++) {
+		anims[idx].SetTrigger(animation_trigger);
+	}
+	
 	GameControl.RegisterCharacter(this);
 }
 
