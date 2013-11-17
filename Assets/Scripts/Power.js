@@ -1,3 +1,3 @@
 ﻿#pragma strict
 
-var power : int;
+var power : float;

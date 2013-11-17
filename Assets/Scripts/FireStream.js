@@ -9,6 +9,9 @@ function Start () {
 }
 
 function Update () {
+	if (this.transform.root.GetComponentInChildren(ControlCharacter).weapon != CharacterWeapon.Soaker)
+		return;
+		
 	if (this.projectileClone && this.projectileClone.particleSystem.particleCount == 0)
 	{
 		GameObject.Destroy(this.projectileClone);

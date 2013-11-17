@@ -89,9 +89,11 @@ function FixedUpdate() {
     var v = Input.GetAxis("Vertical");
     if (canClimb && v * rigidbody2D.velocity.y < maxSpeed) {
     	rigidbody2D.AddForce(UnityEngine.Vector2.up * v * moveForce + UnityEngine.Vector2(0.0, 9.81));
+    	ChangeState(CharacterState.Climbing);
     }
     if (previousCanClimb && !canClimb) {
     	rigidbody2D.velocity.y = 0.0;
+    	ChangeState(CharacterState.Idling);
     }
     
     // Keep upright
