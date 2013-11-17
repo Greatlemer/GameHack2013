@@ -1,6 +1,7 @@
 ﻿#pragma strict
 
 var maxHealth : int;
+var color : Color;
 private var health : int;
 private var power = 0;
 private var collisionEvents = new ParticleSystem.CollisionEvent[16];
@@ -33,5 +34,5 @@ function OnParticleCollision(other : GameObject)
 	}
 	health -= numCollisionEvents / 10.0 * power;
 	health = health < 0 ? 0 : health > maxHealth ? maxHealth : health;
-	gameObject.renderer.material.color = Color.Lerp(Color.red, Color.white, health / 100.0);
+	gameObject.renderer.material.color = Color.Lerp(color, Color.white, health / 100.0);
 }

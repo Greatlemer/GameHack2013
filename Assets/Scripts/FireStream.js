@@ -24,12 +24,12 @@ function Update () {
 		if (this.projectileClone)
 		{
 			this.projectileClone.particleSystem.transform.position = transform.position;
-			this.projectileClone.particleSystem.transform.rotation = transform.rotation * projectile.transform.rotation * dirMult;
+			this.projectileClone.particleSystem.transform.rotation = dirMult * transform.rotation * projectile.transform.rotation;
 			this.projectileClone.particleSystem.enableEmission = true;
 		}
 		else
 		{
-			this.projectileClone = GameObject.Instantiate(projectile, transform.position, transform.rotation * projectile.transform.rotation * dirMult);
+			this.projectileClone = GameObject.Instantiate(projectile, transform.position, dirMult * transform.rotation * projectile.transform.rotation);
 		}
 	}
 	if (this.projectileClone && Input.GetButtonUp(key) && this.projectile.particleSystem.emissionRate > 0)

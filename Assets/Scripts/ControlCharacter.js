@@ -4,6 +4,7 @@ var moveForce = 5;
 var maxSpeed = 50;
 var FacingRight = true;
 var canClimb = false;
+var previousCanClimb = false;
 
 enum CharacterState { Inactive, Idling, Walking, Jumping, Climbing, Shooting };
 
@@ -43,7 +44,7 @@ function FixedUpdate() {
     if (canClimb && v * rigidbody2D.velocity.y < maxSpeed) {
     	rigidbody2D.AddForce(UnityEngine.Vector2.up * v * moveForce + UnityEngine.Vector2(0.0, 9.81));
     }
-    if (!canClimb) {
+    if (previousCanClimb && !canClimb) {
     	rigidbody2D.velocity.y = 0.0;
     }
     if(Mathf.Abs(h) > 0.1) {
@@ -52,6 +53,7 @@ function FixedUpdate() {
     else {
     	ChangeState(CharacterState.Idling);
     }
+    previousCanClimb = canClimb;
 }
 
 function FlipCharacter() {
