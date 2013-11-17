@@ -19,6 +19,8 @@ private var anims : Animator[];
 private var anims_length : int;
 
 private var aimAngle : float = 0.0;
+var fire : Fire;
+var firestream : FireStream;
 
 function Awake () {
 	anims = GetComponentsInChildren.<Animator>();
@@ -71,6 +73,13 @@ function Update () {
 			newWeapon = weapon + 1;
 		}
 		ChangeWeapon(newWeapon);
+	}
+	if (Input.GetButtonDown("Fire")) {
+		fire.Fire();
+		firestream.Fire();
+	}
+	if (Input.GetButtonUp("Fire")) {
+		firestream.CeaseFire();
 	}
 }
 
