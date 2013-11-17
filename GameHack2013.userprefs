@@ -1,22 +1,10 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/ControlCharacter.js">
     <Files>
-      <File FileName="Assets/Fire.js" Line="14" Column="3" />
-      <File FileName="Assets/FireStream.js" Line="26" Column="4" />
-      <File FileName="Assets/Damage.js" Line="20" Column="54" />
-      <File FileName="Assets/Power.js" Line="3" Column="17" />
-      <File FileName="Assets/ControlCharacter.js" Line="51" Column="44" />
+      <File FileName="Assets/Jump.js" Line="1" Column="15" />
+      <File FileName="Assets/ControlCharacter.js" Line="34" Column="12" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State expanded="True">
-          <Node name="Assembly-UnityScript" expanded="True">
-            <Node name="ControlCharacter.js" selected="True" />
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

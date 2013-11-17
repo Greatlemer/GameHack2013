@@ -5,17 +5,28 @@ var maxSpeed = 50;
 var FacingRight = true;
 var canClimb = false;
 
+enum CharacterState { Inactive, Idling, Walking, Jumping, Climbing, Shooting };
+
+private var state = CharacterState.Inactive;
+private var anims : Animator[];
+private var anims_length : int;
+
+function Awake () {
+	anims = GetComponentsInChildren.<Animator>();
+    anims_length = anims.length;
+}
+
 function Start () {
 }
 
 function Update () {
-	if (!gameObject.activeSelf) {
+	if (state == CharacterState.Inactive) {
 		return;
 	}
 }
 
 function FixedUpdate() {
-	if (!gameObject.activeSelf) {
+	if (state.Inactive) {
 		return;
 	}
     var h = Input.GetAxis("Horizontal");
@@ -35,18 +46,11 @@ function FixedUpdate() {
     if (!canClimb) {
     	rigidbody2D.velocity.y = 0.0;
     }
-    var anims = GetComponentsInChildren.<Animator>();
-    var anim_length = anims.length;
-    var i=0;
     if(Mathf.Abs(h) > 0.1) {
-    	for(i=0;i < anim_length; i++) {
-    		anims[i].SetTrigger('Walking');
-    	}
+    	ChangeState(CharacterState.Walking);
     }
     else {
-    	for(i=0; i<anim_length; i++) {
-    		anims[i].SetTrigger('Idle');
-    	}
+    	ChangeState(CharacterState.Idling);
     }
 }
 
@@ -55,4 +59,35 @@ function FlipCharacter() {
 	var scale = transform.localScale;
 	scale.x *= -1;
 	transform.localScale = scale;
+}
+
+function ChangeState(newState : CharacterState) {
+	if (newState == state) {
+		return;
+	}
+	var animation_trigger = 'Inactive';
+	switch (newState) {
+		case CharacterState.Inactive:
+			animation_trigger = 'Inactive';
+			break;
+		case CharacterState.Idling:
+			animation_trigger = 'Idle';
+			break;
+		case CharacterState.Walking:
+			animation_trigger = 'Walking';
+			break;
+		case CharacterState.Jumping:
+			animation_trigger = 'Jump';
+			break;
+		case CharacterState.Climbing:
+			animation_trigger = 'Climb';
+			break;
+		case CharacterState.Shooting:
+			animation_trigger = 'Shoot';
+			break;
+	}
+    var idx = 0;
+	for(idx = 0; idx < anims_length; idx++) {
+		anims[idx].SetTrigger(animation_trigger);
+	}
 }
