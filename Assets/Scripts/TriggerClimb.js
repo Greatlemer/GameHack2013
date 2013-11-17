@@ -9,7 +9,6 @@ function OnTriggerEnter2D(other : Collider2D) {
 }
 
 function OnTriggerStay2D(other : Collider2D) {
-	Debug.Log("Ladder triggered!!!");
 	var controlCharacter : ControlCharacter = other.GetComponent(ControlCharacter);
 	if (controlCharacter)
 	{
