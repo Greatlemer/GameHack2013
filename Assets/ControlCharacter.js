@@ -27,9 +27,12 @@ function FixedUpdate() {
     if(h < 0 && FacingRight) {
     	FlipCharacter();
     }
+    var anim = GetComponentInChildren(Animator);
     if(Mathf.Abs(h) > 0.1) {
-    	var anim = GetComponentInChildren(Animator);
-    	anim.SetTrigger('Character.Walking');
+    	anim.SetTrigger('Walking');
+    }
+    else {
+    	anim.SetTrigger('Idle');
     }
 }
 
