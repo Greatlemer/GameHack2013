@@ -35,12 +35,18 @@ function FixedUpdate() {
     if (!canClimb) {
     	rigidbody2D.velocity.y = 0.0;
     }
-    var anim = GetComponentInChildren(Animator);
+    var anims = GetComponentsInChildren.<Animator>();
+    var anim_length = anims.length;
+    var i=0;
     if(Mathf.Abs(h) > 0.1) {
-    	anim.SetTrigger('Walking');
+    	for(i=0;i < anim_length; i++) {
+    		anims[i].SetTrigger('Walking');
+    	}
     }
     else {
-    	anim.SetTrigger('Idle');
+    	for(i=0; i<anim_length; i++) {
+    		anims[i].SetTrigger('Idle');
+    	}
     }
 }
 
