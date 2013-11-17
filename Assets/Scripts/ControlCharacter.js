@@ -18,6 +18,9 @@ var character_type = CharacterType.Leader;
 private var anims : Animator[];
 private var anims_length : int;
 
+var fire : Fire;
+var firestream : FireStream;
+
 function Awake () {
 	anims = GetComponentsInChildren.<Animator>();
     anims_length = anims.length;
@@ -69,6 +72,13 @@ function Update () {
 			newWeapon = weapon + 1;
 		}
 		ChangeWeapon(newWeapon);
+	}
+	if (Input.GetButtonDown("Fire")) {
+		fire.Fire();
+		firestream.Fire();
+	}
+	if (Input.GetButtonUp("Fire")) {
+		firestream.CeaseFire();
 	}
 }
 

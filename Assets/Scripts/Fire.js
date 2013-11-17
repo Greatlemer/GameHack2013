@@ -2,17 +2,23 @@
 
 var projectile : GameObject;
 var key : String;
+var char_controller : ControlCharacter;
 
-function Start () {
-
+function Start() {
+	char_controller = this.transform.parent.parent.GetComponent.<ControlCharacter>();
+	char_controller.fire = this;
 }
 
 function Update () {
-	if (this.transform.root.GetComponentInChildren(ControlCharacter).weapon != CharacterWeapon.Paintball)
+}
+
+function Fire() {
+	if (char_controller.weapon != CharacterWeapon.Paintball)
 		return;
-	
-	if (Input.GetButtonDown(key))
+	var dirMult : UnityEngine.Quaternion = UnityEngine.Quaternion.identity;
+	if (!char_controller.FacingRight)
 	{
-		GameObject.Instantiate(projectile, transform.position, transform.rotation * projectile.transform.rotation);
+		dirMult = UnityEngine.Quaternion.AngleAxis(180, UnityEngine.Vector3(0.0, 1.0, 0.0));
 	}
+	GameObject.Instantiate(projectile, transform.position, dirMult * transform.rotation * projectile.transform.rotation);
 }
