@@ -34,5 +34,11 @@ function OnParticleCollision(other : GameObject)
 	}
 	health -= numCollisionEvents / 10.0 * power;
 	health = health < 0 ? 0 : health > maxHealth ? maxHealth : health;
-	gameObject.renderer.material.color = Color.Lerp(color, Color.white, health / 100.0);
+	var components = new UnityEngine.Component[10];
+	components = gameObject.transform.root.GetComponentsInChildren(Renderer);
+	for (var component in components)
+	{
+		var renderer : Renderer = component as Renderer;
+		renderer.material.color = Color.Lerp(color, Color.white, health / 100.0);
+	}
 }

@@ -71,6 +71,10 @@ function FixedUpdate() {
     if (previousCanClimb && !canClimb) {
     	rigidbody2D.velocity.y = 0.0;
     }
+    
+    // Keep upright
+    rigidbody2D.angularVelocity = 0.0;
+    
     if(Mathf.Abs(h) > 0.1) {
     	ChangeState(CharacterState.Walking);
     }
