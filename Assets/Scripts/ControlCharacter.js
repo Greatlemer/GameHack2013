@@ -52,35 +52,37 @@ function Start () {
 }
 
 function Update () {
-	if (state == CharacterState.Inactive) {
-		return;
-	}
+}
+
+function PreviousWeapon() {
 	var newWeapon : CharacterWeapon;
-	if (Input.GetButtonUp("WeaponChangePrev")) {
-		if (weapon == first_weapon) {
-			newWeapon = last_weapon;
-		}
-		else {
-			newWeapon = weapon - 1;
-		}
-		ChangeWeapon(newWeapon);
+	if (weapon == first_weapon) {
+		newWeapon = last_weapon;
 	}
-	if (Input.GetButtonUp("WeaponChangeNext")) {
-		if (weapon == last_weapon) {
-			newWeapon = first_weapon;
-		}
-		else {
-			newWeapon = weapon + 1;
-		}
-		ChangeWeapon(newWeapon);
+	else {
+		newWeapon = weapon - 1;
 	}
-	if (Input.GetButtonDown("Fire")) {
-		fire.Fire();
-		firestream.Fire();
+	ChangeWeapon(newWeapon);
+}
+
+function NextWeapon() {
+	var newWeapon : CharacterWeapon;
+	if (weapon == last_weapon) {
+		newWeapon = first_weapon;
 	}
-	if (Input.GetButtonUp("Fire")) {
-		firestream.CeaseFire();
+	else {
+		newWeapon = weapon + 1;
 	}
+	ChangeWeapon(newWeapon);
+}
+
+function StartFiring() {
+	fire.Fire();
+	firestream.Fire();
+}
+
+function CeaseFiring() {
+	firestream.CeaseFire();
 }
 
 function FixedUpdate() {

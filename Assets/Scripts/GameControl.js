@@ -19,7 +19,18 @@ function Update () {
 		newCharacter = (activeCharacter + characterCount - 1) % characterCount;
 		ActivateCharacter(newCharacter);
 	}
-	
+	if (Input.GetButtonDown("Fire")) {
+		characters[activeCharacter].StartFiring();
+	}
+	if (Input.GetButtonUp("Fire")) {
+		characters[activeCharacter].CeaseFiring();
+	}
+	if (Input.GetButtonUp("WeaponChangePrev")) {
+		characters[activeCharacter].PreviousWeapon();
+	}
+	if (Input.GetButtonUp("WeaponChangeNext")) {
+		characters[activeCharacter].NextWeapon();
+	}
 }
 
 static function RegisterCharacter(newCharacter : ControlCharacter) {
