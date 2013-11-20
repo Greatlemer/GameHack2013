@@ -18,11 +18,7 @@ function Fire() {
 	var dirMult : UnityEngine.Quaternion = UnityEngine.Quaternion.identity;
 	if (!char_controller.FacingRight)
 	{
-		if (!gameObject.transform.root.GetComponentInChildren(ControlCharacter).FacingRight)
-		{
-			dirMult = UnityEngine.Quaternion.AngleAxis(180, UnityEngine.Vector3(0.0, 1.0, 0.0));
-		}
-		GameObject.Instantiate(projectile, transform.position, dirMult * transform.rotation * projectile.transform.rotation);
+		dirMult = UnityEngine.Quaternion.AngleAxis(180, UnityEngine.Vector3(0.0, 1.0, 0.0));
 	}
 	GameObject.Instantiate(projectile, transform.position, dirMult * transform.rotation * projectile.transform.rotation);
 }

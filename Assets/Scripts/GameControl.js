@@ -31,6 +31,12 @@ function Update () {
 	if (Input.GetButtonUp("WeaponChangeNext")) {
 		characters[activeCharacter].NextWeapon();
 	}
+    var horizontal_input = Input.GetAxis("Horizontal");
+    characters[activeCharacter].MoveHorizontally(horizontal_input);
+    var vertical_input = Input.GetAxis("Vertical");
+    characters[activeCharacter].MoveVertically(vertical_input);
+    var aim_input = Input.GetAxis("Aim");
+    characters[activeCharacter].AdjustAim(aim_input);
 }
 
 static function RegisterCharacter(newCharacter : ControlCharacter) {

@@ -85,49 +85,49 @@ function CeaseFiring() {
 	firestream.CeaseFire();
 }
 
-function FixedUpdate() {
-	if (state == CharacterState.Inactive) {
-		return;
-	}
-    var h = Input.GetAxis("Horizontal");
-    if(h * rigidbody2D.velocity.x < maxSpeed) {
-    	rigidbody2D.AddForce(UnityEngine.Vector2.right * h * moveForce);
+function MoveHorizontally(horizontal_movement : float) {
+    if(horizontal_movement * rigidbody2D.velocity.x < maxSpeed) {
+    	rigidbody2D.AddForce(UnityEngine.Vector2.right * horizontal_movement * moveForce);
     }
-    if(h > 0 && !FacingRight) {
+    if(horizontal_movement > 0 && !FacingRight) {
     	FlipCharacter();
     }
-    if(h < 0 && FacingRight) {
+    else if(horizontal_movement < 0 && FacingRight) {
     	FlipCharacter();
     }
-    var v = Input.GetAxis("Vertical");
-    if (canClimb && v * rigidbody2D.velocity.y < maxSpeed) {
-    	rigidbody2D.AddForce(UnityEngine.Vector2.up * v * moveForce + UnityEngine.Vector2(0.0, 9.81));
+    
+    if(Mathf.Abs(horizontal_movement) > 0.1) {
+    	ChangeState(CharacterState.Walking);
+    }
+    else if(state == CharacterState.Walking) {
+    	ChangeState(CharacterState.Idling);
+    }
+}
+
+function MoveVertically(vertical_movement : float) {
+    if (canClimb && vertical_movement * rigidbody2D.velocity.y < maxSpeed) {
+    	rigidbody2D.AddForce(UnityEngine.Vector2.up * vertical_movement * moveForce + UnityEngine.Vector2(0.0, 9.81));
     	ChangeState(CharacterState.Climbing);
     }
     if (previousCanClimb && !canClimb) {
     	rigidbody2D.velocity.y = 0.0;
     	ChangeState(CharacterState.Idling);
     }
+    previousCanClimb = canClimb;
+}
 
+function AdjustAim(aim_movement : float) {
     var weaponAnim = gameObject.transform.Find("Weapon Animation");
-    if (Input.GetButton("AimUp") && aimAngle < 45.0)
+    if (aim_movement > 0 && aimAngle < 45.0)
     {
     	weaponAnim.transform.Rotate(UnityEngine.Vector3(0.0, 0.0, 1.0));
     	aimAngle += 1.0;
     }
-    if (Input.GetButton("AimDown") && aimAngle > -45.0)
+    else if (aim_movement < 0 && aimAngle > -45.0)
     {
     	weaponAnim.transform.Rotate(UnityEngine.Vector3(0.0, 0.0, -1.0));
     	aimAngle -= 1.0;
     }
-    
-    if(Mathf.Abs(h) > 0.1) {
-    	ChangeState(CharacterState.Walking);
-    }
-    else {
-    	ChangeState(CharacterState.Idling);
-    }
-    previousCanClimb = canClimb;
 }
 
 function FlipCharacter() {
