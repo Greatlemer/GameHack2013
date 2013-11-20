@@ -1,19 +1,18 @@
 ﻿#pragma strict
 
 var projectile : GameObject;
-var key : String;
 var projectileClone : GameObject = null;
 var char_controller : ControlCharacter;
 
 function Start() {
 	char_controller = this.transform.parent.parent.GetComponent.<ControlCharacter>();
-	char_controller.firestream = this;
+	char_controller.super_soaker = this;
 }
 
 function Update () {
 }
 
-function Fire() {
+function StartFiring() {
 	if (char_controller.weapon != CharacterWeapon.Soaker)
 		return;
 		
@@ -42,7 +41,7 @@ function Fire() {
 	}
 }
 
-function CeaseFire() {
+function CeaseFiring() {
 	if (this.projectileClone && this.projectile.particleSystem.emissionRate > 0)
 	{
 		this.projectileClone.particleSystem.enableEmission = false;
