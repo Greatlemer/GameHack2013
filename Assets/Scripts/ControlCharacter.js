@@ -19,8 +19,8 @@ private var anims : Animator[];
 private var anims_length : int;
 
 private var aimAngle : float = 0.0;
-var fire : Fire;
-var firestream : FireStream;
+var paintball_gun : PaintballGun;
+var super_soaker : SuperSoaker;
 
 function Awake () {
 	anims = GetComponentsInChildren.<Animator>();
@@ -77,12 +77,13 @@ function NextWeapon() {
 }
 
 function StartFiring() {
-	fire.Fire();
-	firestream.Fire();
+	super_soaker.StartFiring();
+	paintball_gun.StartFiring();
 }
 
 function CeaseFiring() {
-	firestream.CeaseFire();
+	super_soaker.CeaseFiring();
+	paintball_gun.CeaseFiring();
 }
 
 function MoveHorizontally(horizontal_movement : float) {
