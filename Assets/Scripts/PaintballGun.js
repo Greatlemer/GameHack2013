@@ -1,26 +1,24 @@
 ﻿#pragma strict
 
 var projectile : GameObject;
-var char_controller : ControlCharacter;
 
-function Start() {
-	char_controller = this.transform.parent.parent.GetComponent.<ControlCharacter>();
-	char_controller.paintball_gun = this;
-}
+class PaintballGun extends CharacterWeapon {
 
-function Update () {
-}
-
-function StartFiring() {
-	if (char_controller.weapon != CharacterWeapon.Paintball)
-		return;
-	var dirMult : UnityEngine.Quaternion = UnityEngine.Quaternion.identity;
-	if (!char_controller.FacingRight)
-	{
-		dirMult = UnityEngine.Quaternion.AngleAxis(180, UnityEngine.Vector3(0.0, 1.0, 0.0));
+	function Awake() {
+		this.weaponId = 1;
+		super.Awake();
 	}
-	GameObject.Instantiate(projectile, transform.position, dirMult * transform.rotation * projectile.transform.rotation);
-}
 
-function CeaseFiring() {
+	function StartFiring(powerModifier : float, rangeModifier : float, facingRight : boolean) {
+		var dirMult : UnityEngine.Quaternion = UnityEngine.Quaternion.identity;
+		if (!facingRight)
+		{
+			dirMult = UnityEngine.Quaternion.AngleAxis(180, UnityEngine.Vector3(0.0, 1.0, 0.0));
+		}
+		var transform = this.muzzle;
+		GameObject.Instantiate(this.projectile, transform.position, dirMult * transform.rotation * this.projectile.transform.rotation);
+	}
+
+	function CeaseFiring() {
+	}
 }
