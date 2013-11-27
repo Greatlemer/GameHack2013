@@ -52,7 +52,7 @@
      <Compile Include="Assets\Scripts\Jump.js" />
      <Compile Include="Assets\Scripts\Muzzle.js" />
      <Compile Include="Assets\Scripts\PaintballGun.js" />
-     <Compile Include="Assets\Scripts\Power.js" />
+     <Compile Include="Assets\Scripts\Projectile.js" />
      <Compile Include="Assets\Scripts\SuperSoaker.js" />
      <Compile Include="Assets\Scripts\TriggerClimb.js" />
      <Compile Include="Assets\Scripts\Weapon.js" />

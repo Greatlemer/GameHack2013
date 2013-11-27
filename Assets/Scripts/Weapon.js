@@ -16,7 +16,7 @@ class CharacterWeapon extends MonoBehaviour {
 		this.CeaseFiring();
 	}
 	
-	function StartFiring(powerModifier : float, rangeModifier : float, facingRight : boolean) {
+	function StartFiring(powerModifier : float, rangeModifier : float, facingRight : boolean, paintColour : Color) {
 	}
 	
 	function CeaseFiring() {
@@ -70,8 +70,8 @@ function NextWeapon() {
 	ActivateWeapon(newWeapon);
 }
 
-function StartFiring(powerModifier : float, rangeModifier : float, facingRight : boolean) {
-	weapons[activeWeapon].StartFiring(powerModifier, rangeModifier, facingRight);
+function StartFiring(powerModifier : float, rangeModifier : float, facingRight : boolean, paintColour : Color) {
+	weapons[activeWeapon].StartFiring(powerModifier, rangeModifier, facingRight, paintColour);
 }
 
 function CeaseFiring() {

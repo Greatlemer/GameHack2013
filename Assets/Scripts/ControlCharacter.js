@@ -1,11 +1,15 @@
 ﻿#pragma strict
 
 var moveForce = 5;
+var jumpForce = 250;
 var maxSpeed = 50;
-var canClimb = false;
-var previousCanClimb = false;
+var maxHealth = 100;
+internal var canClimb = false;
+internal var previousCanClimb = false;
 var rangeModifier = 1;
 var powerModifier = 1;
+var recoveryRate : float = -5;
+var paintColour : Color;
 
 enum CharacterType { Leader, Defender, Speedy, Sharpshooter };
 enum CharacterState { Inactive, Idling, Walking, Jumping, Climbing, Shooting };
@@ -16,14 +20,24 @@ private var state = CharacterState.Inactive;
 var characterType = CharacterType.Leader;
 private var anims : Animator[];
 private var anims_length : int;
+private var spriteRenderer : SpriteRenderer;
 
 private var aimAngle : float = 0.0;
 private var weaponController : Weapon;
 
+private var groundCollider : Transform;
+private var currentHealth : float = maxHealth;
+private var stunned : boolean = false;
+private var damageColour : Color = Color.white;
+
+var canJump : boolean = true;
+
 function Awake () {
 	anims = GetComponentsInChildren.<Animator>();
     anims_length = anims.length;
-    weaponController = this.GetComponentInChildren.<Weapon>();
+    this.weaponController = this.GetComponentInChildren.<Weapon>();
+    this.groundCollider = this.transform.Find("Ground Collider").transform;
+    this.spriteRenderer = this.transform.GetComponentInChildren.<SpriteRenderer>();
 }
 
 function Start () {
@@ -51,9 +65,36 @@ function Start () {
 }
 
 function Update () {
+	this.canJump = Physics2D.Linecast(this.groundCollider.position, this.transform.position, 1 << LayerMask.NameToLayer("Ground"));
+	if (this.stunned) {
+		this.TakeDamage(this.recoveryRate);
+	}
+}
+
+function TakeDamage(damageTaken : float, damageColour : Color) {
+	if (damageColour != Color.white) {
+		this.damageColour = damageColour;
+	}
+	this.TakeDamage(damageTaken);
+}
+
+function TakeDamage(damageTaken : float) {
+	this.currentHealth -= damageTaken;
+	if (this.currentHealth <= 0) {
+		this.currentHealth = 0;
+		this.stunned = true;
+	}
+	else if (this.currentHealth >= this.maxHealth) {
+		this.currentHealth = this.maxHealth;
+		this.stunned = false;
+	}
+	this.spriteRenderer.color = Color.Lerp(this.damageColour, Color.white, this.currentHealth * 1.0 / this.maxHealth);
 }
 
 function MoveHorizontally(horizontal_movement : float) {
+	if (this.stunned) {
+		return;
+	}
     if(horizontal_movement * rigidbody2D.velocity.x < maxSpeed) {
     	rigidbody2D.AddForce(UnityEngine.Vector2.right * horizontal_movement * moveForce);
     }
@@ -73,11 +114,20 @@ function MoveHorizontally(horizontal_movement : float) {
 }
 
 function MoveVertically(vertical_movement : float) {
-    if (canClimb && vertical_movement * rigidbody2D.velocity.y < maxSpeed) {
-    	rigidbody2D.AddForce(UnityEngine.Vector2.up * vertical_movement * moveForce + UnityEngine.Vector2(0.0, 9.81));
-    	ChangeState(CharacterState.Climbing);
-    }
-    if (previousCanClimb && !canClimb) {
+	if (this.stunned) {
+		return;
+	}
+	if (canClimb) {
+	    if (vertical_movement * rigidbody2D.velocity.y < maxSpeed) {
+	    	rigidbody2D.AddForce(UnityEngine.Vector2.up * vertical_movement * moveForce + UnityEngine.Vector2(0.0, 9.81));
+	    	ChangeState(CharacterState.Climbing);
+	    }
+	}
+	else if (canJump && vertical_movement > 0) {
+	    rigidbody2D.AddForce(UnityEngine.Vector2.up * jumpForce + UnityEngine.Vector2(0.0, 9.81));
+	    this.canJump = false;
+	}
+    else if (previousCanClimb && state == CharacterState.Climbing) {
     	rigidbody2D.velocity.y = 0.0;
     	ChangeState(CharacterState.Idling);
     }
@@ -85,6 +135,9 @@ function MoveVertically(vertical_movement : float) {
 }
 
 function AdjustAim(aim_movement : float) {
+	if (this.stunned) {
+		return;
+	}
     if (aim_movement > 0 && aimAngle < 45.0)
     {
     	weaponController.transform.Rotate(UnityEngine.Vector3(0.0, 0.0, 1.0));
@@ -145,7 +198,10 @@ function Deactivate() {
 }
 
 function StartFiring() {
-	this.weaponController.StartFiring(this.powerModifier, this.rangeModifier, this.facingRight);
+	if (this.stunned) {
+		return;
+	}
+	this.weaponController.StartFiring(this.powerModifier, this.rangeModifier, this.facingRight, this.paintColour);
 }
 
 function CeaseFiring() {
@@ -153,9 +209,15 @@ function CeaseFiring() {
 }
 
 function NextWeapon() {
+	if (this.stunned) {
+		return;
+	}
 	this.weaponController.NextWeapon();
 }
 
 function PreviousWeapon() {
+	if (this.stunned) {
+		return;
+	}
 	this.weaponController.PreviousWeapon();
 }

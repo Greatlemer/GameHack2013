@@ -1,24 +1,22 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Muzzle.js">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/TriggerClimb.js">
     <Files>
       <File FileName="Assets/Scripts/ControlCharacter.js" Line="89" Column="6" />
       <File FileName="Assets/Scripts/GameControl.js" Line="18" Column="49" />
-      <File FileName="Assets/Scripts/PaintballGun.js" Line="18" Column="40" />
-      <File FileName="Assets/Scripts/SuperSoaker.js" Line="19" Column="40" />
+      <File FileName="Assets/Scripts/PaintballGun.js" Line="18" Column="30" />
+      <File FileName="Assets/Scripts/SuperSoaker.js" Line="19" Column="30" />
       <File FileName="Assets/Scripts/TriggerClimb.js" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Damage.js" Line="31" Column="39" />
       <File FileName="Assets/Scripts/Jump.js" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Power.js" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Weapon.js" Line="34" Column="24" />
-      <File FileName="Assets/Scripts/Muzzle.js" Line="5" Column="2" />
+      <File FileName="Assets/Scripts/Weapon.js" Line="56" Column="25" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="Assembly-UnityScript" expanded="True">
             <Node name="Scripts" expanded="True">
-              <Node name="Muzzle.js" selected="True" />
+              <Node name="Projectile.js" selected="True" />
             </Node>
           </Node>
         </State>

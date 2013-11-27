@@ -10,7 +10,10 @@ class SuperSoaker extends CharacterWeapon {
 		super.Awake();
 	}
 
-	function StartFiring(powerModifier : float, rangeModifier : float, facingRight : boolean) {
+	function StartFiring(powerModifier : float, rangeModifier : float, facingRight : boolean, paintColour : Color) {
+		var projectileDetails = this.projectile.GetComponent.<Projectile>();
+		projectileDetails.setColour(Color.white);
+		projectileDetails.damageModifier = powerModifier;
 		var dirMult : UnityEngine.Quaternion = UnityEngine.Quaternion.identity;
 		if (!facingRight)
 		{
