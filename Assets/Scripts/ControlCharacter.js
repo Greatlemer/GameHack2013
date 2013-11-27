@@ -1,9 +1,11 @@
 ﻿#pragma strict
 
+class ControlCharacter extends DamagableObject {
+}
+
 var moveForce = 5;
 var jumpForce = 250;
 var maxSpeed = 50;
-var maxHealth = 100;
 internal var canClimb = false;
 internal var previousCanClimb = false;
 var rangeModifier = 1;
@@ -15,20 +17,16 @@ enum CharacterType { Leader, Defender, Speedy, Sharpshooter };
 enum CharacterState { Inactive, Idling, Walking, Jumping, Climbing, Shooting };
 
 
-private var facingRight = true;
+public var facingRight = true;
 private var state = CharacterState.Inactive;
 var characterType = CharacterType.Leader;
 private var anims : Animator[];
 private var anims_length : int;
-private var spriteRenderer : SpriteRenderer;
 
 private var aimAngle : float = 0.0;
 private var weaponController : Weapon;
 
 private var groundCollider : Transform;
-private var currentHealth : float = maxHealth;
-private var stunned : boolean = false;
-private var damageColour : Color = Color.white;
 
 var canJump : boolean = true;
 
@@ -37,7 +35,11 @@ function Awake () {
     anims_length = anims.length;
     this.weaponController = this.GetComponentInChildren.<Weapon>();
     this.groundCollider = this.transform.Find("Ground Collider").transform;
-    this.spriteRenderer = this.transform.GetComponentInChildren.<SpriteRenderer>();
+    if (!this.facingRight) {
+    	this.facingRight = true;
+    	this.FlipCharacter();
+    }
+    super.Awake();
 }
 
 function Start () {
@@ -71,26 +73,6 @@ function Update () {
 	}
 }
 
-function TakeDamage(damageTaken : float, damageColour : Color) {
-	if (damageColour != Color.white) {
-		this.damageColour = damageColour;
-	}
-	this.TakeDamage(damageTaken);
-}
-
-function TakeDamage(damageTaken : float) {
-	this.currentHealth -= damageTaken;
-	if (this.currentHealth <= 0) {
-		this.currentHealth = 0;
-		this.stunned = true;
-	}
-	else if (this.currentHealth >= this.maxHealth) {
-		this.currentHealth = this.maxHealth;
-		this.stunned = false;
-	}
-	this.spriteRenderer.color = Color.Lerp(this.damageColour, Color.white, this.currentHealth * 1.0 / this.maxHealth);
-}
-
 function MoveHorizontally(horizontal_movement : float) {
 	if (this.stunned) {
 		return;
@@ -117,7 +99,10 @@ function MoveVertically(vertical_movement : float) {
 	if (this.stunned) {
 		return;
 	}
-	if (canClimb) {
+	if (canClimb && Mathf.Abs(vertical_movement) < 0.2) {
+		rigidbody2D.velocity.y = 0.0;
+	}
+	else if (canClimb) {
 	    if (vertical_movement * rigidbody2D.velocity.y < maxSpeed) {
 	    	rigidbody2D.AddForce(UnityEngine.Vector2.up * vertical_movement * moveForce + UnityEngine.Vector2(0.0, 9.81));
 	    	ChangeState(CharacterState.Climbing);
