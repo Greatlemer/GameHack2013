@@ -1,23 +1,24 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/ControlCharacter.js">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Damage.js">
     <Files>
-      <File FileName="Assets/Scripts/ControlCharacter.js" Line="3" Column="31" />
+      <File FileName="Assets/Scripts/ControlCharacter.js" Line="20" Column="8" />
       <File FileName="Assets/Scripts/GameControl.js" Line="18" Column="49" />
       <File FileName="Assets/Scripts/PaintballGun.js" Line="20" Column="49" />
       <File FileName="Assets/Scripts/SuperSoaker.js" Line="15" Column="43" />
       <File FileName="Assets/Scripts/TriggerClimb.js" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Damage.js" Line="1" Column="15" />
+      <File FileName="Assets/Scripts/Damage.js" Line="33" Column="39" />
       <File FileName="Assets/Scripts/Jump.js" Line="1" Column="1" />
       <File FileName="Assets/Scripts/Weapon.js" Line="74" Column="90" />
       <File FileName="Assets/Scripts/Projectile.js" Line="37" Column="17" />
+      <File FileName="Assets/Scripts/TreehouseControl.js" Line="1" Column="15" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="Assembly-UnityScript" expanded="True">
             <Node name="Scripts" expanded="True">
-              <Node name="ControlCharacter.js" selected="True" />
+              <Node name="Damage.js" selected="True" />
             </Node>
           </Node>
         </State>
