@@ -20,8 +20,8 @@ enum CharacterState { Inactive, Idling, Walking, Jumping, Climbing, Shooting };
 public var facingRight = true;
 private var state = CharacterState.Inactive;
 var characterType = CharacterType.Leader;
-private var anims : Animator[];
-private var anims_length : int;
+private var animators : Animator[];
+private var animatorCount : int;
 
 private var aimAngle : float = 0.0;
 private var weaponController : Weapon;
@@ -31,8 +31,8 @@ private var groundCollider : Transform;
 var canJump : boolean = true;
 
 function Awake () {
-	anims = GetComponentsInChildren.<Animator>();
-    anims_length = anims.length;
+	animators = GetComponentsInChildren.<Animator>();
+    animatorCount = animators.length;
     this.weaponController = this.GetComponentInChildren.<Weapon>();
     this.groundCollider = this.transform.Find("Ground Collider").transform;
     if (!this.facingRight) {
@@ -43,24 +43,24 @@ function Awake () {
 }
 
 function Start () {
-	var animation_trigger = 'Assign Leader';
+	var animationTrigger = 'Assign Leader';
 	switch (this.characterType) {
 		case CharacterType.Defender:
-			animation_trigger = 'Assign Defender';
+			animationTrigger = 'Assign Defender';
 			break;
 		case CharacterType.Leader:
-			animation_trigger = 'Assign Leader';
+			animationTrigger = 'Assign Leader';
 			break;
 		case CharacterType.Sharpshooter:
-			animation_trigger = 'Assign Sharpshooter';
+			animationTrigger = 'Assign Sharpshooter';
 			break;
 		case CharacterType.Speedy:
-			animation_trigger = 'Assign Speedy';
+			animationTrigger = 'Assign Speedy';
 			break;
 	}
     var idx = 0;
-	for(idx = 0; idx < anims_length; idx++) {
-		anims[idx].SetTrigger(animation_trigger);
+	for(idx = 0; idx < animatorCount; idx++) {
+		animators[idx].SetTrigger(animationTrigger);
 	}
 	
 	GameControl.RegisterCharacter(this);
@@ -71,11 +71,19 @@ function Update () {
 	if (this.stunned) {
 		this.TakeDamage(this.recoveryRate);
 	}
+    var idx = 0;
+	for(idx = 0; idx < animatorCount; idx++) {
+		animators[idx].SetBool("Character Active", this.state != CharacterState.Inactive);
+	}
 }
 
 function MoveHorizontally(horizontal_movement : float) {
 	if (this.stunned) {
 		return;
+	}
+    var idx = 0;
+	for(idx = 0; idx < animatorCount; idx++) {
+		animators[idx].SetFloat("Horizontal Movement", horizontal_movement);
 	}
     if(horizontal_movement * rigidbody2D.velocity.x < maxSpeed) {
     	rigidbody2D.AddForce(UnityEngine.Vector2.right * horizontal_movement * moveForce);
@@ -98,6 +106,12 @@ function MoveHorizontally(horizontal_movement : float) {
 function MoveVertically(vertical_movement : float) {
 	if (this.stunned) {
 		return;
+	}
+    var idx = 0;
+	for(idx = 0; idx < animatorCount; idx++) {
+		animators[idx].SetBool("Can Climb", this.canClimb);
+		animators[idx].SetBool("On Ground", this.canJump);
+		animators[idx].SetFloat("Vertical Movement", vertical_movement);
 	}
 	if (canClimb && Mathf.Abs(vertical_movement) < 0.2) {
 		rigidbody2D.velocity.y = 0.0;
@@ -146,32 +160,7 @@ function ChangeState(newState : CharacterState) {
 	if (newState == state) {
 		return;
 	}
-	var animation_trigger = 'Inactive';
-	switch (newState) {
-		case CharacterState.Inactive:
-			animation_trigger = 'Inactive';
-			break;
-		case CharacterState.Idling:
-			animation_trigger = 'Idle';
-			break;
-		case CharacterState.Walking:
-			animation_trigger = 'Walk';
-			break;
-		case CharacterState.Jumping:
-			animation_trigger = 'Jump';
-			break;
-		case CharacterState.Climbing:
-			animation_trigger = 'Climb';
-			break;
-		case CharacterState.Shooting:
-			animation_trigger = 'Shoot';
-			break;
-	}
 	state = newState;
-    var idx = 0;
-	for(idx = 0; idx < anims_length; idx++) {
-		anims[idx].SetTrigger(animation_trigger);
-	}
 }
 
 function Activate() {
