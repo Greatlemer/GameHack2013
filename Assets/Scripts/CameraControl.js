@@ -1,8 +1,10 @@
 ﻿#pragma strict
 
 private var activeCharacter : Transform;
-public var maxX = 9.2;
-public var minX = -9.2;
+private var minX = -13.6;
+private var maxX = 13.6;
+private var minY = 3.25;
+private var maxY = 8.23;
 
 function Awake () {
 	GameControl.RegisterCamera(this);
@@ -19,6 +21,13 @@ function UpdateX() {
 	this.transform.position.x = newX;
 }
 
+function UpdateY() {
+	var newY = this.activeCharacter.position.y;
+	newY = Mathf.Clamp(newY, minY, maxY);
+	this.transform.position.y = newY;
+}
+
 function Update() {
 	this.UpdateX();
+	this.UpdateY();
 }
