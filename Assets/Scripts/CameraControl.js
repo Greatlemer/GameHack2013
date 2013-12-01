@@ -1,10 +1,10 @@
 ﻿#pragma strict
 
 private var activeCharacter : Transform;
-private var minX = -13.6;
-private var maxX = 13.6;
-private var minY = 3.25;
-private var maxY = 8.23;
+private var minX = -10;
+private var maxX = 10;
+private var minY = 4.4;
+private var maxY = 5.15;
 
 function Awake () {
 	GameControl.RegisterCamera(this);
