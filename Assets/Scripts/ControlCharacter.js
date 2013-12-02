@@ -28,7 +28,14 @@ private var weaponController : Weapon;
 
 private var groundCollider : Transform;
 
+private var horizontalMovement : float;
+private var verticalMovement : float;
+private var aimMovement : float;
+
+var jumping : boolean = false;
+
 var canJump : boolean = true;
+var onGround : boolean = true;
 
 function Awake () {
 	animators = GetComponentsInChildren.<Animator>();
@@ -43,31 +50,36 @@ function Awake () {
 }
 
 function Start () {
-	var animationTrigger = 'Assign Leader';
+	var animationTrigger = 'Is Leader';
 	switch (this.characterType) {
 		case CharacterType.Defender:
-			animationTrigger = 'Assign Defender';
+			animationTrigger = 'Is Defender';
 			break;
 		case CharacterType.Leader:
-			animationTrigger = 'Assign Leader';
+			animationTrigger = 'Is Leader';
 			break;
 		case CharacterType.Sharpshooter:
-			animationTrigger = 'Assign Sharpshooter';
+			animationTrigger = 'Is Sharpshooter';
 			break;
 		case CharacterType.Speedy:
-			animationTrigger = 'Assign Speedy';
+			animationTrigger = 'Is Speedy';
 			break;
 	}
     var idx = 0;
 	for(idx = 0; idx < animatorCount; idx++) {
-		animators[idx].SetTrigger(animationTrigger);
+		animators[idx].SetBool(animationTrigger, true);
 	}
 	
 	GameControl.RegisterCharacter(this);
 }
 
 function Update () {
-	this.canJump = Physics2D.Linecast(this.groundCollider.position, this.transform.position, 1 << LayerMask.NameToLayer("Ground"));
+	var wasOnGround = this.onGround;
+	this.onGround = Physics2D.Linecast(this.groundCollider.position, this.transform.position, 1 << LayerMask.NameToLayer("Ground"));
+	if (this.jumping && this.rigidbody2D.velocity.y <= 0) {
+		this.jumping = false;
+	}
+	this.canJump = !this.jumping && this.onGround;
 	if (this.stunned) {
 		this.TakeDamage(this.recoveryRate);
 	}
@@ -77,13 +89,20 @@ function Update () {
 	}
 }
 
+function FixedUpdate ()
+{
+	this.MoveHorizontally();
+	this.MoveVertically();
+	this.AdjustAim();
+}
+
 function MoveHorizontally(horizontalMovement : float) {
+	this.horizontalMovement = horizontalMovement;
+}
+
+function MoveHorizontally() {
 	if (this.stunned) {
 		return;
-	}
-    var idx = 0;
-	for(idx = 0; idx < animatorCount; idx++) {
-		animators[idx].SetFloat("Horizontal Movement", horizontalMovement);
 	}
     if(horizontalMovement * rigidbody2D.velocity.x < maxSpeed) {
     	rigidbody2D.AddForce(UnityEngine.Vector2.right * horizontalMovement * moveForce);
@@ -101,22 +120,27 @@ function MoveHorizontally(horizontalMovement : float) {
     else if(state == CharacterState.Walking) {
     	ChangeState(CharacterState.Idling);
     }
+    var idx = 0;
+	for(idx = 0; idx < animatorCount; idx++) {
+		animators[idx].SetFloat("Horizontal Movement", rigidbody2D.velocity.x);
+	}
 }
 
 function MoveVertically(verticalMovement : float) {
+	this.verticalMovement = verticalMovement;
+}
+
+function MoveVertically() {
 	if (this.stunned) {
 		return;
 	}
-    var idx = 0;
-	for(idx = 0; idx < animatorCount; idx++) {
-		animators[idx].SetBool("Can Climb", this.canClimb);
-		animators[idx].SetBool("On Ground", this.canJump);
-		animators[idx].SetFloat("Vertical Movement", verticalMovement);
-	}
-	if (canClimb && Mathf.Abs(verticalMovement) < 0.2) {
+	if (this.canClimb && !this.onGround && Mathf.Abs(verticalMovement) <= 0.2) {
+		// Add a force to counter gravity.
+	    rigidbody2D.AddForce(UnityEngine.Vector2(0.0, 9.81));
+	    // Then make sure that movement stops.
 		rigidbody2D.velocity.y = 0.0;
 	}
-	else if (canClimb) {
+	else if (canClimb && Mathf.Abs(verticalMovement) > 0.2) {
 	    if (verticalMovement * rigidbody2D.velocity.y < maxSpeed) {
 	    	rigidbody2D.AddForce(UnityEngine.Vector2.up * verticalMovement * moveForce + UnityEngine.Vector2(0.0, 9.81));
 	    	ChangeState(CharacterState.Climbing);
@@ -124,6 +148,7 @@ function MoveVertically(verticalMovement : float) {
 	}
 	else if (canJump && verticalMovement > 0.2) {
 	    rigidbody2D.AddForce(UnityEngine.Vector2.up * jumpForce + UnityEngine.Vector2(0.0, 9.81));
+	    this.jumping = true;
 	    this.canJump = false;
 	}
     else if (previousCanClimb && state == CharacterState.Climbing) {
@@ -131,9 +156,19 @@ function MoveVertically(verticalMovement : float) {
     	ChangeState(CharacterState.Idling);
     }
     previousCanClimb = canClimb;
+    var idx = 0;
+	for(idx = 0; idx < animatorCount; idx++) {
+		animators[idx].SetBool("Can Climb", this.canClimb);
+		animators[idx].SetBool("On Ground", this.onGround);
+		animators[idx].SetFloat("Vertical Movement", rigidbody2D.velocity.y);
+	}
 }
 
 function AdjustAim(aimMovement : float) {
+	this.aimMovement = aimMovement;
+}
+
+function AdjustAim() {
 	if (this.stunned) {
 		return;
 	}
@@ -168,6 +203,9 @@ function Activate() {
 }
 
 function Deactivate() {
+	this.aimMovement = 0;
+	this.verticalMovement = 0;
+	this.horizontalMovement = 0;
 	ChangeState(CharacterState.Inactive);
 }
 
